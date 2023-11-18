@@ -1,0 +1,10 @@
+streamlit
+pandas
+numpy
+matplotlib
+PIL
+seaborn
+altair
+plotly
+openpyxl
+plotly.express
