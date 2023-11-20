@@ -2,6 +2,28 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
+
+# Título de la aplicación
+st.title('CEPAL - ANALISIS DE INDICADORES')
+
+# Cargar una imagen desde un archivo local
+image_path = 'C:\JHAA\CEPAL_3\WorldBank-Corruption-Insights\CEPAL.jpg'  # Reemplaza con la ruta a tu imagen
+image = st.image(image_path, caption='Descripción opcional', use_column_width=True)
+
+# También puedes cargar una imagen directamente desde una URL
+# image_url = 'https://ejemplo.com/ejemplo.jpg'
+# image = st.image(image_url, caption='Descripción opcional', use_column_width=True)
+
+# Puedes ajustar el tamaño de la imagen y agregar texto debajo
+ st.image(image_path, caption='Otra descripción', width=300, height=200)
+
+# Puedes usar Markdown para formatear el texto
+# st.image(image_path, caption='**Texto en negrita**', use_column_width=True)
+
+# También puedes cambiar la posición del texto (abajo, arriba, izquierda, derecha)
+# st.image(image_path, caption='Texto a la izquierda', use_column_width=True, location='left')
+
+
 # Cargar los datos
 file_path_1 = r'C:\JHAA\CEPAL_3\WorldBank-Corruption-Insights\Extraccion\structured_data\merged_df_normalized.xlsx'
 file_path_2 = r'C:\JHAA\CEPAL_3\WorldBank-Corruption-Insights\Extraccion\structured_data\reduced_df_normalized.xlsx'
@@ -14,7 +36,7 @@ dfs = [df1, df2]
 df_names = ['merged_df', 'reduced_df']
 
 # Streamlit app
-st.title('Análisis de Datos')
+st.title('ANALISIS DE DATOS - CEPAL')
 
 # Selector de archivo
 selected_df = st.selectbox('Seleccionar Archivo:', df_names)
