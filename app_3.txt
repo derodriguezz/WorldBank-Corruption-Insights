@@ -1,12 +1,11 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
+import plotly.express as px
 from PIL import Image
 
 
 # Ruta a la imagen
-ruta_imagen = "C:\JHAA\CEPAL_2\CEPAL.jpg"
+ruta_imagen = "C:\JHAA\CEPAL_3\WorldBank-Corruption-Insights\CEPAL.jpg"
 
 
 # Función para cargar y mostrar la imagen
@@ -23,64 +22,43 @@ st.image(imagen, caption='Imagen "CEPAL"', use_column_width=True)
 
 
 
-import pandas as pd
-import streamlit as st
-import plotly.express as px
+# Cargar los datos
+file_path_1 = r'C:\JHAA\CEPAL_3\WorldBank-Corruption-Insights\Extraccion\structured_data\merged_df_normalized.xlsx'
+file_path_2 = r'C:\JHAA\CEPAL_3\WorldBank-Corruption-Insights\Extraccion\structured_data\reduced_df_normalized.xlsx'
 
-# Cargar datos desde el archivo Excel
-file_path = r'C:\JHAA\CEPAL_2\archivo_reduced_df.xlsx'
-df = pd.read_excel(file_path)
+df1 = pd.read_excel(file_path_1)
+df2 = pd.read_excel(file_path_2)
 
-# Interfaz de usuario con filtros desplegables
-st.sidebar.title('Filtros')
-selected_countries = st.sidebar.multiselect('Seleccionar países', df['Country'].unique())
-selected_columns = st.sidebar.multiselect('Seleccionar columnas', df.columns)
+# Crear una lista de dataframes y nombres
+dfs = [df1, df2]
+df_names = ['merged_df', 'reduced_df']
 
-# Filtrar el DataFrame según los países seleccionados y las columnas seleccionadas
-filtered_df = df[df['Country'].isin(selected_countries)]
-filtered_df = filtered_df[['Year', 'Country'] + selected_columns]  # Añadir la columna 'Year' y 'Country'
+# Streamlit app
+st.title('ANALISIS DE DATOS - CEPAL')
 
-# Crear gráfico interactivo
-#fig = px.line(filtered_df, x='Year', y=selected_columns, color='Country')
-fig = px.bar(filtered_df, x='Year', y=selected_columns, color='Country', barmode='stack')
-#fig = px.area(filtered_df, x='Year', y=selected_columns, color='Country')
-#fig = px.scatter(filtered_df, x='Year', y=selected_columns, color='Country')
-#fig = px.violin(filtered_df, x='Year', y=selected_columns, color='Country', box=True, points="all")
+# Selector de archivo
+selected_df = st.selectbox('Seleccionar Archivo:', df_names)
 
+# Selector de variables
+selected_variables = st.multiselect('Seleccionar Variable(s):', df1.columns)
 
+# Filtro por país
+selected_countries = st.multiselect('Seleccionar País(es):', df1['Country'].unique())
 
-# Mostrar gráfico en la aplicación de Streamlit
-st.title('RELACION INDICADORES ENTRE PAISES')
+# Filtro por año
+selected_year = st.slider('Seleccionar Año:', min_value=df1['Year'].min(), max_value=df1['Year'].max(), value=(df1['Year'].min(), df1['Year'].max()))
+
+# Filtrar el DataFrame
+filtered_df = dfs[df_names.index(selected_df)]
+filtered_df = filtered_df[(filtered_df['Country'].isin(selected_countries)) & (filtered_df['Year'] >= selected_year[0]) & (filtered_df['Year'] <= selected_year[1])]
+
+# Aplicar filtro de variables seleccionadas
+if selected_variables:
+    filtered_df = filtered_df[selected_variables + ['Year', 'Country']]
+
+# Graficar con Plotly Express
+fig = px.line(filtered_df, x='Year', y=selected_variables, color='Country', title='Gráfica Interactiva')
 st.plotly_chart(fig)
 
-
-
-
-import pandas as pd
-import streamlit as st
-import plotly.express as px
-
-# Ruta del archivo
-file_path = r'C:\JHAA\CEPAL_2\archivo_reduced_df2.xlsx'
-
-# Función para cargar datos desde el archivo
-def load_data():
-    return pd.read_excel(file_path)
-
-# Cargar datos
-df = load_data()
-
-# Interfaz de usuario con filtros desplegables
-st.sidebar.title('Filtros - COLOMBIA')
-selected_columns = st.sidebar.multiselect('Seleccionar Indicador(es)', df.filter(regex='^(CRP|GDE)').columns)
-
-# Añadir la columna 'Country' con valor fijo
-df['Country'] = 'Colombia'
-filtered_df = df[['Year', 'Country'] + selected_columns]  # Añadir la columna 'Year' y 'Country'
-
-# Crear gráfico interactivo
-#fig = px.line(filtered_df, x='Year', y=selected_columns, color='Country')
-fig = px.area(filtered_df, x='Year', y=selected_columns, color='Country')
-# Mostrar gráfico en la aplicación de Streamlit
-st.title('INDICADORES - PARA COLOMBIA')
-st.plotly_chart(fig)
+# Mostrar tabla de datos
+st.dataframe(filtered_df)

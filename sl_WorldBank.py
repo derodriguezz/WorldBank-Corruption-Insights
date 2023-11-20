@@ -1,27 +1,25 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+from PIL import Image
 
+
+# Ruta a la imagen
+ruta_imagen = "C:\JHAA\CEPAL_3\WorldBank-Corruption-Insights\CEPAL.jpg"
+
+
+# Función para cargar y mostrar la imagen
+def cargar_imagen(ruta):
+    imagen = Image.open(ruta)
+    return imagen
 
 # Título de la aplicación
-st.title('CEPAL - ANALISIS DE INDICADORES')
+st.title('CEPAL - INDICADORES ODS-CORR')
 
-# Cargar una imagen desde un archivo local
-image_path = 'C:\JHAA\CEPAL_3\WorldBank-Corruption-Insights\CEPAL.jpg'  # Reemplaza con la ruta a tu imagen
-image = st.image(image_path, caption='Descripción opcional', use_column_width=True)
+# Cargar y mostrar la imagen
+imagen = cargar_imagen(ruta_imagen)
+st.image(imagen, caption='Imagen "CEPAL"', use_column_width=True)
 
-# También puedes cargar una imagen directamente desde una URL
-# image_url = 'https://ejemplo.com/ejemplo.jpg'
-# image = st.image(image_url, caption='Descripción opcional', use_column_width=True)
-
-# Puedes ajustar el tamaño de la imagen y agregar texto debajo
- st.image(image_path, caption='Otra descripción', width=300, height=200)
-
-# Puedes usar Markdown para formatear el texto
-# st.image(image_path, caption='**Texto en negrita**', use_column_width=True)
-
-# También puedes cambiar la posición del texto (abajo, arriba, izquierda, derecha)
-# st.image(image_path, caption='Texto a la izquierda', use_column_width=True, location='left')
 
 
 # Cargar los datos

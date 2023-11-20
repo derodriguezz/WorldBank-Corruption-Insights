@@ -2,10 +2,12 @@ streamlit
 pandas
 numpy
 matplotlib
-PIL
+Pillow==8.3.2
 seaborn
 altair
 plotly
 openpyxl
 plotly.express
 wbgapi
+/home/appuser/venv/bin/python -m pip install --upgrade pip
+/home/appuser/venv/bin/python -m pip install -r requirements.txt
