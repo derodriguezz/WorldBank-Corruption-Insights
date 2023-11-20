@@ -8,3 +8,4 @@ altair
 plotly
 openpyxl
 plotly.express
+wbgapi
