@@ -1,3 +1,5 @@
+pip install --upgrade pip
+
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -12,7 +14,6 @@ ruta_imagen = "C:\JHAA\CEPAL_3\WorldBank-Corruption-Insights\CEPAL.jpg"
 def cargar_imagen(ruta):
     imagen = Image.open(ruta)
     return imagen
-
 # Título de la aplicación
 st.title('CEPAL - INDICADORES ODS-CORR')
 
