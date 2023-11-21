@@ -12,7 +12,7 @@ import os
 #ruta_imagen = 'C:/JHAA/CEPAL_3/WorldBank-Corruption-Insights/CEPAL.jpg'
 
 directory = 'C:/JHAA/CEPAL_3/WorldBank-Corruption-Insights'
-filename = 'CEPAL.jpg'
+filename = 'cepal.jpg'
 ruta_imagen = os.path.join(directory, filename)
 
 #directory = 'C:\\JHAA\\CEPAL_3\\WorldBank-Corruption-Insights'
