@@ -1,3 +1,4 @@
+
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -5,19 +6,18 @@ from PIL import Image
 
 
 # Ruta a la imagen
-ruta_imagen = "C:\JHAA\CEPAL_3\WorldBank-Corruption-Insights\CEPAL.jpg"
-
+##ruta_imagen = "C:\JHAA\CEPAL_3\WorldBank-Corruption-Insights\CEPAL.jpg"
 
 # Función para cargar y mostrar la imagen
-def cargar_imagen(ruta):
-    imagen = Image.open(ruta)
-    return imagen
+##def cargar_imagen(ruta):
+##    imagen = Image.open(ruta)
+##    return imagen
 # Título de la aplicación
-st.title('CEPAL - INDICADORES ODS-CORR')
+##st.title('CEPAL - INDICADORES ODS-CORR')
 
 # Cargar y mostrar la imagen
-imagen = cargar_imagen(ruta_imagen)
-st.image(imagen, caption='Imagen "CEPAL"', use_column_width=True)
+##imagen = cargar_imagen(ruta_imagen)
+##st.image(imagen, caption='Imagen "CEPAL"', use_column_width=True)
 
 
 
