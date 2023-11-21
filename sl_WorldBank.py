@@ -8,6 +8,14 @@ import os
 
 # Ruta a la imagen
 # O utilizando la barra diagonal hacia adelante
+import os
+import streamlit as st
+
+# Establecer el directorio de trabajo de Streamlit
+st.set_option('deprecation.showfileUploaderEncoding', False)
+st.set_page_config(page_title='WorldBank Corruption Insights', layout='wide')
+
+# Resto de tu código Streamlit
 
 #ruta_imagen = 'C:/JHAA/CEPAL_3/WorldBank-Corruption-Insights/CEPAL.jpg'
 
