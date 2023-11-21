@@ -3,10 +3,22 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from PIL import Image
+import os
 
 
 # Ruta a la imagen
-ruta_imagen = "C:\JHAA\CEPAL_3\WorldBank-Corruption-Insights\CEPAL.jpg"
+# O utilizando la barra diagonal hacia adelante
+
+#ruta_imagen = 'C:/JHAA/CEPAL_3/WorldBank-Corruption-Insights/CEPAL.jpg'
+
+directory = 'C:/JHAA/CEPAL_3/WorldBank-Corruption-Insights'
+filename = 'CEPAL.jpg'
+ruta_imagen = os.path.join(directory, filename)
+
+#directory = 'C:\\JHAA\\CEPAL_3\\WorldBank-Corruption-Insights'
+#filename = 'CEPAL.jpg'
+#ruta_imagen = os.path.join(directory, filename)
+
 
 # Función para cargar y mostrar la imagen
 def cargar_imagen(ruta):
@@ -22,8 +34,8 @@ st.image(imagen, caption='Imagen "CEPAL"', use_column_width=True)
 
 
 # Cargar los datos
-file_path_1 = r'C:\JHAA\CEPAL_3\WorldBank-Corruption-Insights\Extraccion\structured_data\merged_df_normalized.xlsx'
-file_path_2 = r'C:\JHAA\CEPAL_3\WorldBank-Corruption-Insights\Extraccion\structured_data\reduced_df_normalized.xlsx'
+file_path_1 = r'C:\\JHAA\CEPAL_3\\WorldBank-Corruption-Insights\\Extraccion\structured_data\\merged_df_normalized.xlsx'
+file_path_2 = r'C:\\JHAA\\CEPAL_3\\WorldBank-Corruption-Insights\\Extraccion\\structured_data\\reduced_df_normalized.xlsx'
 
 df1 = pd.read_excel(file_path_1)
 df2 = pd.read_excel(file_path_2)
