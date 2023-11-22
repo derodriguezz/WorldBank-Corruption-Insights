@@ -9,21 +9,33 @@ import pandas as pd
 import plotly.express as px
 from PIL import Image
 import os
+from PIL import Image
+import os
+
+# Convertir la imagen a formato PNG
+##imagen_jpg = 'cepal.jpg'
+##imagen_png = 'cepal.png'
+
+##Image.open(imagen_jpg).save(imagen_png)
+
+# Mostrar la imagen convertida
+##imagen = Image.open(imagen_png)
+#imagen.show()
 
 # Ruta a la imagen
-ruta_imagen = 'cepal.jpg'  # Esta es la ruta relativa al directorio de la aplicación en Streamlit Community Cloud
+###ruta_imagen = 'C:\JHAA\CEPAL_3\WorldBank-Corruption-Insights\cepal.png'  # Esta es la ruta relativa al directorio de la aplicación en Streamlit Community Cloud
 
 # Función para cargar y mostrar la imagen
-def cargar_imagen(ruta):
-    imagen = Image.open(ruta)
-    return imagen
+##def cargar_imagen(ruta):
+##    imagen = Image.open(ruta)
+#    return imagen
 
 # Título de la aplicación
 st.title('CEPAL - INDICADORES ODS-CORR')
 
 # Cargar y mostrar la imagen
-imagen = cargar_imagen(ruta_imagen)
-st.image(imagen, caption='Imagen "CEPAL"', use_column_width=True)
+#imagen = cargar_imagen(ruta_imagen)
+st.image('https://thelogisticsworld.com/wp-content/uploads/2023/09/Cepal.jpg')
 
 # Resto del código...
 
@@ -55,4 +67,4 @@ fig = px.line(filtered_df, x='Year', y=selected_variables, color='Country', titl
 st.plotly_chart(fig)
 
 # Mostrar tabla de datos
-st.dataframe(filtered_df)
+#st.dataframe(filtered_df)
