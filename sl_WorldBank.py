@@ -21,7 +21,7 @@ file_path = "Extraccion/structured_data/reduced_df_normalized.xlsx"
 df2 = pd.read_excel(file_path)
 
 # Mostrar la tabla en Streamlit
-st.dataframe(df2)
+#st.dataframe(df2)
 
 #df2 = pd.read_excel(file_path_2)
 
@@ -53,40 +53,57 @@ fig = px.line(filtered_df, x='Year', y=selected_variables, color='Country', titl
 
 
 # Crear una lista de opciones para las pestañas
-tabs = ["Diagrama Dispersion", "Correlaciones", "Matriz de Correlaciòn", "Grafico Indicadores"]
+########################
 
-# Crear un selector para las pestañas
-selected_tab = st.selectbox("Selecciona una pestaña", tabs)
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from pandas.plotting import table
+from openpyxl import load_workbook
 
-# Mostrar contenido según la pestaña seleccionada
-if selected_tab == "Diagrama Dispersion":
-    st.plotly_chart(fig)
+# Cargar el DataFrame desde el archivo Excel
+archivo_excel = r'C:\JHAA\CEPAL_3\WorldBank-Corruption-Insights\Extraccion\structured_data\reduced_df_normalized.xlsx'
+df = pd.read_excel(archivo_excel)
 
-elif selected_tab == "Correlaciones":
-    st.write("Contenido de la Pestaña 2")
-    # Seleccionar las columnas que comienzan con "OD", "GDE" y "CRP"
-    selected_columns = merged_df.filter(regex='^(ODS|GDE|CRP)')
+# Seleccionar las columnas que comienzan con "CRP" y "GDE"
+columnas_crp = [col for col in df.columns if col.startswith('CRP')]
+columnas_gde = [col for col in df.columns if col.startswith('GDE')]
 
-    # Calcular la matriz de correlación para las columnas seleccionadas
-    correlation_matrix = selected_columns.corr()
+# Crear un nuevo DataFrame con las columnas seleccionadas
+df_corr = df[columnas_crp + columnas_gde]
 
-    # Crear una máscara para la mitad superior de la matriz de correlación
-    mask = np.triu(np.ones_like(correlation_matrix, dtype=bool))
+# Calcular la matriz de correlación
+matriz_correlacion = df_corr.corr()
 
-    # Configurar el estilo del gráfico
-    plt.figure(figsize=(10, 8))
-    sns.set(style="white")
+# Configurar el estilo del gráfico
+sns.set(style='white')
 
-    # Crear un mapa de calor con la matriz de correlación sin etiquetas en las celdas
-    sns.heatmap(correlation_matrix, annot=False, cmap="coolwarm", mask=mask, cbar=False)
+# Crear un mapa de calor de la matriz de correlación
+plt.figure(figsize=(12, 8))
+sns.heatmap(matriz_correlacion, annot=True, cmap='coolwarm', fmt='.2f', linewidths=.5)
 
-    # Configurar las propiedades del gráfico
-    plt.title('Matriz de Correlación (con valores en ejes x e y)')
-    plt.show()
+# Mostrar el gráfico
+plt.title('Matriz de Correlación entre Variables CRP y GDE')
 
-elif selected_tab == "Matriz de Correlaciòn":
-    st.write("Contenido de la Pestaña 3")
+# Obtener la ubicación de la celda donde se insertará el gráfico
+hoja_destino = 'Pestaña1'  # Cambia esto según el nombre de la pestaña deseada
+ubicacion_celda = 'A1'
 
-elif selected_tab == "Grafico Indicadores":
-    st.write("Contenido de la Pestaña 3")
+# Guardar el gráfico en el archivo Excel
+with pd.ExcelWriter(archivo_excel, engine='openpyxl') as writer:
+    writer.book = load_workbook(archivo_excel)
+    writer.sheets = dict((ws.title, ws) for ws in writer.book.worksheets)
 
+    # Guardar el gráfico en la hoja de Excel
+    imagen = plt.imshow([[0, 0], [0, 0]], cmap='coolwarm')
+    plt.gca().set_visible(False)
+    tabla = table(plt.gca(), matriz_correlacion, loc='center', colWidths=[0.1] * len(matriz_correlacion.columns))
+    tabla.auto_set_font_size(False)
+    tabla.set_fontsize(10)
+    tabla.scale(1.2, 1.2)
+
+    writer.sheets[hoja_destino].add_image(imagen, ubicacion_celda)
+    plt.close()
+
+    # Guardar el archivo Excel con el gráfico
+    writer.save()
