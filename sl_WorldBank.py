@@ -18,25 +18,59 @@ st.image('https://thelogisticsworld.com/wp-content/uploads/2023/09/Cepal.jpg')
 # Configurar la barra lateral con las pestañas
 import streamlit as st
 
-# Configurar la barra lateral con las pestañas
-st.sidebar.title('Pestañas')
-opciones = ['Pestaña 1', 'Pestaña 2', 'Pestaña 3']
-seleccion = st.sidebar.radio('Ir a:', opciones)
+tab1, tab2, tab3 = st.tabs(["Correlacion", "Dispersion", "Matriz"])
 
-# Contenido de las pestañas
-if seleccion == 'Pestaña 1':
-    st.subheader('Contenido de la Pestaña 1')
+with tab1:
+   st.header("Grafica de Correlación entre variables")
+   st.image("Procesamiento\graficas_sl\correlacion.png", width=900)
 
-    # Agrega aquí el contenido específico de la pestaña 1
+with tab2:
+   st.header("Grafica de Dispersion entre variables")
+   st.image("Procesamiento\graficas_sl\diagrama_dispersión.png", width=900)
 
-    # Agregar la imagen desde la ruta especificada
-    ruta_imagen = r'C:/JHAA/CEPAL_3/WorldBank-Corruption-Insights/Procesamiento/graficas_sl/correlacion.png'
-    st.image(ruta_imagen, caption='Matriz de Correlación', use_column_width=True)
+with tab3:
+   st.header("Tabla Matriz de Correlación")
+   ruta_matriz_correlacion = r'C:\JHAA\CEPAL_3\WorldBank-Corruption-Insights\Procesamiento\graficas_sl\matriz_correlacion.csv'
+   matriz_correlacion = pd.read_csv(ruta_matriz_correlacion, index_col=0)
+   # Aplicar estilos para resaltar valores
+   estilos = matriz_correlacion.style.background_gradient(cmap='coolwarm').highlight_null('red')
+   st.dataframe(estilos)
+   # Mostrar la aplicación Streamlit
+   st.write('Matriz de Correlación, entre variables de interes')
 
-elif seleccion == 'Pestaña 2':
-    st.subheader('Contenido de la Pestaña 2')
-    # Agrega aquí el contenido específico de la pestaña 2
+# Ruta del archivo Excel
+file_path = "Extraccion/structured_data/reduced_df_normalized.xlsx"
 
-elif seleccion == 'Pestaña 3':
-    st.subheader('Contenido de la Pestaña 3')
-    # Agrega aquí el contenido específico de la pestaña 3
+# Cargar el archivo Excel en un DataFrame
+df2 = pd.read_excel(file_path)
+
+# Mostrar la tabla en Streamlit
+#st.dataframe(df2)
+
+#df2 = pd.read_excel(file_path_2)
+
+# Streamlit app
+st.title('ANALISIS DE DATOS - CEPAL')
+
+# Selector de variables
+selected_variables = st.multiselect('Seleccionar Variable(s):', df2.columns)
+
+# Filtro por país
+selected_countries = st.multiselect('Seleccionar País(es):', df2['Country'].unique())
+
+# Filtro por año
+selected_year = st.slider('Seleccionar Año:', min_value=df2['Year'].min(), max_value=df2['Year'].max(), value=(df2['Year'].min(), df2['Year'].max()))
+
+# Filtrar el DataFrame
+filtered_df = df2[(df2['Country'].isin(selected_countries)) & (df2['Year'] >= selected_year[0]) & (df2['Year'] <= selected_year[1])]
+
+# Aplicar filtro de variables seleccionadas
+if selected_variables:
+    filtered_df = filtered_df[selected_variables + ['Year', 'Country']]
+
+# Graficar con Plotly Express
+fig = px.line(filtered_df, x='Year', y=selected_variables, color='Country', title='Gráfica Interactiva')
+st.plotly_chart(fig)
+
+# Mostrar tabla de datos
+#st.dataframe(filtered_df)
