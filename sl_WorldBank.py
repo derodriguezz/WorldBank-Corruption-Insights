@@ -44,11 +44,6 @@ file_path = "Extraccion/structured_data/reduced_df_normalized.xlsx"
 # Cargar el archivo Excel en un DataFrame
 df2 = pd.read_excel(file_path)
 
-# Mostrar la tabla en Streamlit
-#st.dataframe(df2)
-
-#df2 = pd.read_excel(file_path_2)
-
 # Streamlit app
 st.title('ANALISIS DE DATOS - CEPAL')
 
