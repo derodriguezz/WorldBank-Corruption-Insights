@@ -22,15 +22,15 @@ tab1, tab2, tab3 = st.tabs(["Correlacion", "Dispersion", "Matriz"])
 
 with tab1:
    st.header("Grafica de Correlación entre variablessss")
-   st.image("Procesamiento\graficas_sl\correlacion.png", width=900)
+   st.image("Procesamiento/Cgraficas_sl/Ccorrelacion.png", width=900)
 
 with tab2:
    st.header("Grafica de Dispersion entre variables")
-   st.image("Procesamiento\graficas_sl\diagrama_dispersión.png", width=900)
+   st.image("Procesamiento/Cgraficas_sl/Cdiagrama_dispersión.png", width=900)
 
 with tab3:
    st.header("Tabla Matriz de Correlación")
-   ruta_matriz_correlacion = r'Procesamiento\graficas_sl\matriz_correlacion.csv'
+   ruta_matriz_correlacion = r'Procesamiento/Cgraficas_sl/Cmatriz_correlacion.csv'
    matriz_correlacion = pd.read_csv(ruta_matriz_correlacion, index_col=0)
    # Aplicar estilos para resaltar valores
    estilos = matriz_correlacion.style.background_gradient(cmap='coolwarm').highlight_null('red')
