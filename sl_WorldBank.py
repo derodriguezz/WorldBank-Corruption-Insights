@@ -3,8 +3,7 @@ import pandas as pd
 import plotly.express as px
 from PIL import Image
 import os
-from PIL import Image
-import os
+
 
 # Título de la aplicación
 st.title('CEPAL - INDICADORES ODS-CORR')
@@ -21,16 +20,16 @@ import streamlit as st
 tab1, tab2, tab3 = st.tabs(["Correlacion", "Dispersion", "Matriz"])
 
 with tab1:
-   st.header("Grafica de Correlación entre variablessss")
-   st.image("Procesamiento/Cgraficas_sl/Ccorrelacion.png", width=900)
+   st.header("Grafica de Correlación entre variables")
+   st.image("Procesamiento\graficas_sl\correlacion.png", width=900)
 
 with tab2:
    st.header("Grafica de Dispersion entre variables")
-   st.image("Procesamiento/Cgraficas_sl/Cdiagrama_dispersión.png", width=900)
+   st.image("Procesamiento\graficas_sl\diagrama_dispersión.png", width=900)
 
 with tab3:
    st.header("Tabla Matriz de Correlación")
-   ruta_matriz_correlacion = r'Procesamiento/Cgraficas_sl/Cmatriz_correlacion.csv'
+   ruta_matriz_correlacion = r'C:\JHAA\CEPAL_3\WorldBank-Corruption-Insights\Procesamiento\graficas_sl\matriz_correlacion.csv'
    matriz_correlacion = pd.read_csv(ruta_matriz_correlacion, index_col=0)
    # Aplicar estilos para resaltar valores
    estilos = matriz_correlacion.style.background_gradient(cmap='coolwarm').highlight_null('red')
@@ -43,6 +42,11 @@ file_path = "Extraccion/structured_data/reduced_df_normalized.xlsx"
 
 # Cargar el archivo Excel en un DataFrame
 df2 = pd.read_excel(file_path)
+
+# Mostrar la tabla en Streamlit
+#st.dataframe(df2)
+
+#df2 = pd.read_excel(file_path_2)
 
 # Streamlit app
 st.title('ANALISIS DE DATOS - CEPAL')
@@ -69,3 +73,4 @@ st.plotly_chart(fig)
 
 # Mostrar tabla de datos
 #st.dataframe(filtered_df)
+
