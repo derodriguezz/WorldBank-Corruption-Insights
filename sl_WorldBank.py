@@ -13,8 +13,10 @@ st.title('CEPAL - INDICADORES ODS-CORR')
 #imagen = cargar_imagen(ruta_imagen)
 st.image('https://thelogisticsworld.com/wp-content/uploads/2023/09/Cepal.jpg')
 
-import streamlit as st
-import pandas as pd
+
+###############################
+
+
 
 # Ruta del archivo Excel
 file_path = "Extraccion/structured_data/reduced_df_normalized.xlsx"
@@ -48,7 +50,47 @@ if selected_variables:
 
 # Graficar con Plotly Express
 fig = px.line(filtered_df, x='Year', y=selected_variables, color='Country', title='Gráfica Interactiva')
-st.plotly_chart(fig)
+#st.plotly_chart(fig)
 
 # Mostrar tabla de datos
 #st.dataframe(filtered_df)
+
+
+# Crear una lista de opciones para las pestañas
+tabs = ["Diagrama Dispersion", "Correlaciones", "Matriz de Correlaciòn", "Grafico Indicadores"]
+
+# Crear un selector para las pestañas
+selected_tab = st.selectbox("Selecciona una pestaña", tabs)
+
+# Mostrar contenido según la pestaña seleccionada
+if selected_tab == "Diagrama Dispersion":
+    st.plotly_chart(fig)
+
+elif selected_tab == "Correlaciones":
+    st.write("Contenido de la Pestaña 2")
+    # Seleccionar las columnas que comienzan con "OD", "GDE" y "CRP"
+    selected_columns = merged_df.filter(regex='^(ODS|GDE|CRP)')
+
+    # Calcular la matriz de correlación para las columnas seleccionadas
+    correlation_matrix = selected_columns.corr()
+
+    # Crear una máscara para la mitad superior de la matriz de correlación
+    mask = np.triu(np.ones_like(correlation_matrix, dtype=bool))
+
+    # Configurar el estilo del gráfico
+    plt.figure(figsize=(10, 8))
+    sns.set(style="white")
+
+    # Crear un mapa de calor con la matriz de correlación sin etiquetas en las celdas
+    sns.heatmap(correlation_matrix, annot=False, cmap="coolwarm", mask=mask, cbar=False)
+
+    # Configurar las propiedades del gráfico
+    plt.title('Matriz de Correlación (con valores en ejes x e y)')
+    plt.show()
+
+elif selected_tab == "Matriz de Correlaciòn":
+    st.write("Contenido de la Pestaña 3")
+
+elif selected_tab == "Grafico Indicadores":
+    st.write("Contenido de la Pestaña 3")
+
