@@ -21,7 +21,7 @@ import streamlit as st
 tab1, tab2, tab3 = st.tabs(["Correlacion", "Dispersion", "Matriz"])
 
 with tab1:
-   st.header("Grafica de Correlación entre variables")
+   st.header("Grafica de Correlación entre variablessss")
    st.image("Procesamiento\graficas_sl\correlacion.png", width=900)
 
 with tab2:
