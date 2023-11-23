@@ -13,39 +13,49 @@ st.title('CEPAL - INDICADORES ODS-CORR')
 #imagen = cargar_imagen(ruta_imagen)
 st.image('https://thelogisticsworld.com/wp-content/uploads/2023/09/Cepal.jpg')
 
-# Ruta del archivo Excel
-file_path = "Extraccion/structured_data/reduced_df_normalized.xlsx"
 
-# Cargar el archivo Excel en un DataFrame
-df2 = pd.read_excel(file_path)
 
-# Mostrar la tabla en Streamlit
-st.dataframe(df2)
+# Configurar la barra lateral con las pestañas
+st.sidebar.title('Pestañas')
+opciones = ['Pestaña 1', 'Pestaña 2', 'Pestaña 3']
+seleccion = st.sidebar.radio('Ir a:', opciones)
 
-#df2 = pd.read_excel(file_path_2)
+# Contenido de las pestañas
+if seleccion == 'Pestaña 1':
+    st.subheader('Contenido de la Pestaña 1')
+    # Agrega aquí el contenido específico de la pestaña 1
 
-# Streamlit app
-st.title('ANALISIS DE DATOS - CEPAL')
+# Cargar el DataFrame desde el archivo Excel
+    archivo_excel = r'C:\JHAA\CEPAL_3\WorldBank-Corruption-Insights\Extraccion\structured_data\reduced_df_normalized.xlsx'
+    df = pd.read_excel(archivo_excel)
 
-# Selector de variables
-selected_variables = st.multiselect('Seleccionar Variable(s):', df2.columns)
+# Seleccionar las columnas que comienzan con "CRP" y "GDE"
+    columnas_crp = [col for col in df.columns if col.startswith('CRP')]
+    columnas_gde = [col for col in df.columns if col.startswith('GDE')]
 
-# Filtro por país
-selected_countries = st.multiselect('Seleccionar País(es):', df2['Country'].unique())
+# Crear un nuevo DataFrame con las columnas seleccionadas
+    df_corr = df[columnas_crp + columnas_gde]
 
-# Filtro por año
-selected_year = st.slider('Seleccionar Año:', min_value=df2['Year'].min(), max_value=df2['Year'].max(), value=(df2['Year'].min(), df2['Year'].max()))
+# Calcular la matriz de correlación
+    matriz_correlacion = df_corr.corr()
 
-# Filtrar el DataFrame
-filtered_df = df2[(df2['Country'].isin(selected_countries)) & (df2['Year'] >= selected_year[0]) & (df2['Year'] <= selected_year[1])]
+# Configurar el estilo del gráfico
+    sns.set(style='white')
 
-# Aplicar filtro de variables seleccionadas
-if selected_variables:
-    filtered_df = filtered_df[selected_variables + ['Year', 'Country']]
+# Crear un mapa de calor de la matriz de correlación
+    plt.figure(figsize=(12, 8))
+    sns.heatmap(matriz_correlacion, annot=True, cmap='coolwarm', fmt='.2f', linewidths=.5)
 
-# Graficar con Plotly Express
-fig = px.line(filtered_df, x='Year', y=selected_variables, color='Country', title='Gráfica Interactiva')
-st.plotly_chart(fig)
+# Mostrar el gráfico
+    plt.title('Matriz de Correlación entre Variables CRP y GDE')
+    plt.show()
 
-# Mostrar tabla de datos
-#st.dataframe(filtered_df)
+
+elif seleccion == 'Pestaña 2':
+    st.subheader('Contenido de la Pestaña 2')
+    # Agrega aquí el contenido específico de la pestaña 2
+
+elif seleccion == 'Pestaña 3':
+    st.subheader('Contenido de la Pestaña 3')
+    # Agrega aquí el contenido específico de la pestaña 3
+
