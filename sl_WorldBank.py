@@ -14,10 +14,6 @@ st.title('CEPAL - INDICADORES ODS-CORR')
 st.image('https://thelogisticsworld.com/wp-content/uploads/2023/09/Cepal.jpg')
 
 
-###############################
-
-
-
 # Ruta del archivo Excel
 file_path = "Extraccion/structured_data/reduced_df_normalized.xlsx"
 
