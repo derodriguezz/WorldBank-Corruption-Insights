@@ -4,30 +4,36 @@ import plotly.express as px
 from PIL import Image
 import os
 
+# Cargar y mostrar la imagen
+#imagen = cargar_imagen(ruta_imagen)
+st.image('https://thelogisticsworld.com/wp-content/uploads/2023/09/Cepal.jpg', width=300)
 
 # Título de la aplicación
 st.title('CEPAL - INDICADORES ODS-CORR')
 
-# Cargar y mostrar la imagen
-#imagen = cargar_imagen(ruta_imagen)
-st.image('https://thelogisticsworld.com/wp-content/uploads/2023/09/Cepal.jpg')
-
-
-
 # Configurar la barra lateral con las pestañas
 import streamlit as st
 
-tab1, tab2, tab3 = st.tabs(["Correlacion", "Dispersion", "Matriz"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["Correlacion", "Dispersion1" , "Dispersion2" , "Dispersion3", "Matriz"])
 
 with tab1:
    st.header("Grafica de Correlación entre variables")
-   st.image("Procesamiento/graficas_sl/correlacion.png", width=900)
+   st.image("Procesamiento/graficas_sl/correlacion.png", width=500)
 
 with tab2:
    st.header("Grafica de Dispersion entre variables")
-   st.image("Procesamiento/graficas_sl/diagrama_dispersión.png", width=900)
+   st.image("Procesamiento/graficas_sl/diagrama_dispersión.png", width=500)
 
 with tab3:
+   st.header("Grafica de Dispersion entre variables")
+   st.image("Procesamiento/graficas_sl/diagrama_dispersión.png", width=500)
+
+with tab4:
+   st.header("Grafica de Dispersion entre variables")
+   st.image("Procesamiento/graficas_sl/diagrama_dispersión.png", width=500)
+
+
+with tab5:
    st.header("Tabla Matriz de Correlación")
    ruta_matriz_correlacion = r'Procesamiento/graficas_sl/matriz_correlacion.csv'
    matriz_correlacion = pd.read_csv(ruta_matriz_correlacion, index_col=0)
