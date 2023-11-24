@@ -52,7 +52,7 @@ with tab4:
 with tab5:
    st.header("Matriz Modelos de Regresion")
    tab5.subheader("Resultado - Tabla comparativa entre modelos empleados")
-   ruta_matriz_modelos = r'Procesamiento\graficas_sl\modelos_df.csv'
+   ruta_matriz_modelos = r'Procesamiento/graficas_sl/modelos_df.csv'
    matriz_modelos = pd.read_csv(ruta_matriz_modelos, index_col=0)
    # Aplicar estilos para resaltar valores
    estilos = matriz_modelos.style.background_gradient(cmap='coolwarm').highlight_null('red')
