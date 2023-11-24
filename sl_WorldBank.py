@@ -29,7 +29,7 @@ with tab2:
 
 with tab3:
    st.header("Tabla Matriz de Correlación")
-   ruta_matriz_correlacion = r'C:/JHAA/CEPAL_3/WorldBank-Corruption-Insights/Procesamiento/graficas_sl/matriz_correlacion.csv'
+   ruta_matriz_correlacion = r'Procesamiento/graficas_sl/matriz_correlacion.csv'
    matriz_correlacion = pd.read_csv(ruta_matriz_correlacion, index_col=0)
    # Aplicar estilos para resaltar valores
    estilos = matriz_correlacion.style.background_gradient(cmap='coolwarm').highlight_null('red')
