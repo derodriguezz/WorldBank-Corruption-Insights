@@ -26,7 +26,7 @@ with tab2:
 
 with tab3:
    st.header("Grafica de Dispersion entre variables")
-   st.image("Procesamiento/graficas_sl/diagrama_dispersión.png", width=500)
+   st.image("Procesamiento/graficas_sl/diagrama_dispersión1.png", width=500)
 
 with tab4:
    st.header("Grafica de Dispersion entre variables")
