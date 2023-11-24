@@ -39,9 +39,16 @@ with tab3:
 
 with tab4:
    st.header("Resultados modelos de Regresión")
-   tab4.subheader ("En este análisis, hemos utilizado una serie de indicadores del Banco Mundial que se centran en la gobernanza y el desempeño de los gobiernos.  **Control de la Corrupción (CC.EST):** Control de la Corrupción evalúa la percepción de hasta qué punto el poder público se ejerce para beneficio privado, abarcando formas tanto menores como mayores de corrupción.**Efectividad del Gobierno (GE.EST):** Efectividad del Gobierno mide la calidad de los servicios públicos, la independencia del servicio civil y la credibilidad del compromiso del gobierno con sus políticas.**Estado de Derecho - Cumplimiento de la ley (RL.EST):** Estado de Derecho refleja la confianza y el cumplimiento de las reglas de la sociedad, incluyendo la aplicación de contratos, derechos de propiedad, la actuación policial y judicial, así como la probabilidad de crimen y violencia.**Voz y Rendición de Cuentas (VA.EST):** Voz y Rendición de Cuentas evalúa la participación ciudadana en la selección del gobierno y la libertad de expresión, asociación y medios de comunicación.")
- 
-   
+   st.write ("En este análisis, hemos utilizado una serie de indicadores del Banco Mundial que se centran en la gobernanza y el desempeño de los gobiernos.")  
+   tab4.subheader ("Control de la Corrupción (CC.EST):")
+   st.write ("Control de la Corrupción evalúa la percepción de hasta qué punto el poder público se ejerce para beneficio privado, abarcando formas tanto menores como mayores de corrupción.")
+   tab4.subheader ("Efectividad del Gobierno (GE.EST):")
+   st.write  ("Efectividad del Gobierno mide la calidad de los servicios públicos, la independencia del servicio civil y la credibilidad del compromiso del gobierno con sus políticas.")
+   tab4.subheader ("Estado de Derecho - Cumplimiento de la ley (RL.EST):")
+   st.write  ("Estado de Derecho refleja la confianza y el cumplimiento de las reglas de la sociedad, incluyendo la aplicación de contratos, derechos de propiedad, la actuación policial y judicial, así como la probabilidad de crimen y violencia.")
+   tab4.subheader ("Voz y Rendición de Cuentas (VA.ESTb4):")
+   st.write ("Voz y Rendición de Cuentas evalúa la participación ciudadana en la selección del gobierno y la libertad de expresión, asociación y medios de comunicación.")
+
 with tab5:
    st.header("Matriz Modelos de Regresion")
    tab5.subheader("Resultado - Tabla comparativa entre modelos empleados")
