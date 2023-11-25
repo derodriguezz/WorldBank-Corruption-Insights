@@ -14,15 +14,16 @@ st.title('CEPAL - INDICADORES ODS-CORR')
 # Configurar la barra lateral con las pestañas
 import streamlit as st
 
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["Correlacion", "Matriz de Correlación", "Dispersion" , "Resultados Modelos de Regresión" , "Modelo de Regresion", "Gráfica iteractiva"])
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["Bienvenida ", "Correlacion", "Dispersion" , "Resultados Modelos de Regresión" , "Análisis Componentes Principales", "Gráfica iteractiva"])
 
 with tab1:
-   st.header("Grafica de Correlación entre variables")
-   tab1.subheader("De acuerdo a la condición de normalidad de las variables analizadas, se realizan los análisis de correlación Spearman o Pearson según el resultado obtenido en cada una. En todos los análisis se determina la correlación entre la variable objetivo identificada y las variables de corrupción más relevantes identificadas a partir de la matriz de correlación.")
-   st.image("Procesamiento/graficas_sl/correlacion.png", width=700)
+   st.header("BIENVENIDO!!!!!")
+   tab1.subheader("!Saludos y bienvenido a nuestra aplicación especializada en el análisis de indicadores de la CELAP!")
+   tab1.subheader("Estamos emocionados de tenerte como parte de nuestra comunidad, donde la toma de decisiones informadas y estratégicas se convierte en una experiencia accesible y eficiente. Aquí, en nuestra aplicación, encontrarás un espacio diseñado para potenciar tu capacidad de comprender y utilizar los indicadores clave de la CELAP de manera efectiva.")
 
 with tab2:
    st.header("Tabla Matriz de Correlación")
+   tab2.subheader("De acuerdo a la condición de normalidad de las variables analizadas, se realizan los análisis de correlación Spearman o Pearson según el resultado obtenido en cada una. En todos los análisis se determina la correlación entre la variable objetivo identificada y las variables de corrupción más relevantes identificadas a partir de la matriz de correlación.")
    ruta_matriz_correlacion = r'Procesamiento/graficas_sl/matriz_correlacion.csv'
    matriz_correlacion = pd.read_csv(ruta_matriz_correlacion, index_col=0)
    # Aplicar estilos para resaltar valores
@@ -30,14 +31,21 @@ with tab2:
    st.dataframe(estilos)
    # Mostrar la aplicación Streamlit
    st.write('Matriz de Correlación, entre variables de interes')
+   st.image("Procesamiento\graficas_sl\correlación.png", width=900)
 
 
 with tab3:
    st.header("Grafica de Dispersion entre variables")
    tab3.subheader ("")
-   st.image("Procesamiento/graficas_sl/diagrama_dispersión.png", width=900)
+   st.image("Procesamiento\graficas_sl\diagrama_dispersión.png", width=900)
 
 with tab4:
+   tab4.subheader("Resultado - Tabla comparativa entre modelos empleados")
+   ruta_matriz_modelos = r'Procesamiento/graficas_sl/modelos_df.csv'
+   matriz_modelos = pd.read_csv(ruta_matriz_modelos, index_col=0)
+   # Aplicar estilos para resaltar valores
+   estilos = matriz_modelos.style.background_gradient(cmap='coolwarm').highlight_null('red')
+   st.dataframe(matriz_modelos)
    st.header("Resultados modelos de Regresión")
    st.write ("En este análisis, hemos utilizado una serie de indicadores del Banco Mundial que se centran en la gobernanza y el desempeño de los gobiernos.")  
    tab4.subheader ("Control de la Corrupción (CC.EST):")
@@ -59,16 +67,7 @@ with tab4:
    
 
 with tab5:
-   st.header("Matriz Modelos de Regresion")
-   tab5.subheader("Resultado - Tabla comparativa entre modelos empleados")
-   ruta_matriz_modelos = r'Procesamiento/graficas_sl/modelos_df.csv'
-   matriz_modelos = pd.read_csv(ruta_matriz_modelos, index_col=0)
-   # Aplicar estilos para resaltar valores
-   estilos = matriz_modelos.style.background_gradient(cmap='coolwarm').highlight_null('red')
-   st.dataframe(matriz_modelos)
-   # Mostrar la aplicación Streamlit
-   st.write('Matriz modelos de regresion')
-   tab5.subheader ("Análisis de componentes principales")
+   st.header("Análisis componentes principales")
    st.write("El hecho de que con 2 o 3 componentes principales se explique más del 95% de la varianza sugiere que estos componentes capturan la mayoría de la información de las variables de corrupción. El gráfico de varianza explicada acumulativa es útil para determinar cuántos componentes son necesarios para conservar una cantidad significativa de varianza.")
    st.write("El hecho de observar dos clusters distintos en el gráfico de resultados del PCA sugiere que estos clusters se deban a patrones o estructuras que los componentes principales han identificado. Podrían representar grupos o tendencias específicas.")
    st.write("Los pesos de los componentes principales indican la contribución de cada variable original a los componentes principales. En tu caso, el primer componente principal (PC1) tiene pesos relativamente altos para todas las variables, indicando que está capturando información general de todas ellas. Por otro lado, el segundo componente principal (PC2) tiene un peso significativamente alto para la variable 'CRP_GE.EST' y un peso negativo para 'CRP_VA.EST', lo que sugiere que PC2 podría estar relacionado con variaciones específicas en estas dos variables.")
