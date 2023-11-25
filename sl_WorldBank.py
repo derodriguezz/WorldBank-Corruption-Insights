@@ -76,7 +76,7 @@ with tab2:
    with tab2:
       st.header("Grafica de Dispersion entre variables")
       tab2.subheader ("")
-      st.image("Procesamiento\graficas_sl\diagrama_dispersión.png", width=900)
+      st.image("Procesamiento/graficas_sl/diagrama_dispersión.png", width=900)
 
    with tab4:
       st.header("Análisis componentes principales")
@@ -94,7 +94,7 @@ with tab2:
          st.image("Procesamiento/graficas_sl/varianza_explicada_acumulativa.png", width=900)
       with tab2:
          tab2.subheader("Resultados PCA")
-         st.image("Procesamiento\graficas_sl\Resultados_pca.png", width=900)
+         st.image("Procesamiento/graficas_sl/Resultados_pca.png", width=900)
  
    with tab3:
       tab3.subheader("Resultado - Tabla comparativa entre modelos empleados")
