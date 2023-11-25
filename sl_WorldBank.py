@@ -68,6 +68,19 @@ with tab5:
    st.dataframe(matriz_modelos)
    # Mostrar la aplicación Streamlit
    st.write('Matriz modelos de regresion')
+   tab5.subheader ("Análisis de componentes principales")
+   st.write("El hecho de que con 2 o 3 componentes principales se explique más del 95% de la varianza sugiere que estos componentes capturan la mayoría de la información de las variables de corrupción. El gráfico de varianza explicada acumulativa es útil para determinar cuántos componentes son necesarios para conservar una cantidad significativa de varianza.")
+   st.write("El hecho de observar dos clusters distintos en el gráfico de resultados del PCA sugiere que estos clusters se deban a patrones o estructuras que los componentes principales han identificado. Podrían representar grupos o tendencias específicas.")
+   st.write("Los pesos de los componentes principales indican la contribución de cada variable original a los componentes principales. En tu caso, el primer componente principal (PC1) tiene pesos relativamente altos para todas las variables, indicando que está capturando información general de todas ellas. Por otro lado, el segundo componente principal (PC2) tiene un peso significativamente alto para la variable 'CRP_GE.EST' y un peso negativo para 'CRP_VA.EST', lo que sugiere que PC2 podría estar relacionado con variaciones específicas en estas dos variables.")
+   st.write("Los scores de los componentes principales representan las proyecciones de los datos originales en el espacio de los componentes principales. Los valores más altos o más bajos en los scores indican la posición relativa de cada observación en el espacio de los componentes principales:")
+   tab5.subheader("Componente Principal 1 (PC1):")
+   st.write("Este componente parece capturar una tendencia general o patrón común en todas las variables.")
+   tab5.subheader("Componente Principal 2 (PC2)")
+   st.write("Este componente parece capturar variaciones específicas relacionadas con 'CRP_GE.EST' y 'CRP_VA.EST'.")
+   st.image("Procesamiento/graficas_sl/varianza_explicada_acumulativa.png", width=900)
+   st.write("")
+   st.image("Procesamiento\graficas_sl\Resultados_pca.png", width=900)
+   st.write("")
 
 with tab6:
    st.header("Grafica Iteractiva -Indicadores - Pais - Rango de tiempo")
