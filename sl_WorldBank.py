@@ -33,7 +33,6 @@ with tab2:
    st.write('Matriz de Correlación, entre variables de interes')
    st.image("Procesamiento\graficas_sl\correlación.png", width=900)
 
-
 with tab3:
    st.header("Grafica de Dispersion entre variables")
    tab3.subheader ("")
@@ -58,13 +57,30 @@ with tab4:
    st.write ("Voz y Rendición de Cuentas evalúa la participación ciudadana en la selección del gobierno y la libertad de expresión, asociación y medios de comunicación.")
    st.header("Grafica Modelos aplicados")
    tab4.subheader ("Gráfica de Resultados")
-   st.image("Procesamiento/graficas_sl/modelo2_rf_sp.png", width=900)
-   st.image("Procesamiento/graficas_sl/modelo2_rf_cp.png", width=900)
-   st.image("Procesamiento/graficas_sl/modelo2_cp_pred.png", width=900)
-   st.image("Procesamiento/graficas_sl/modelo2_cp_test.png", width=900)
-   st.image("Procesamiento/graficas_sl/modelo2_rf_sp.png", width=900)
-   st.image("Procesamiento/graficas_sl/modelo2_rf_cp.png", width=900)
+   tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["📈 Grafica-1", "📈 Grafica-2", "📈 Grafica-3","📈 Grafica-4", "📈 Grafica-5", "📈 Grafica-6"])
+   with tab1:
+      tab1.subheader("Graficas de prueba-1")
+      st.image("Procesamiento/graficas_sl/modelo2_rf_sp.png", width=900)
    
+   with tab2:
+      tab2.subheader("Graficas de prueba-2")
+      st.image("Procesamiento/graficas_sl/modelo2_rf_cp.png", width=900)
+   
+   with tab3:
+      tab3.subheader("Graficas de prueba-3")
+      st.image("Procesamiento/graficas_sl/modelo2_cp_pred.png", width=900)
+   
+   with tab4:
+      tab4.subheader("Graficas ed prueba-4")
+      st.image("Procesamiento/graficas_sl/modelo2_cp_test.png", width=900)
+
+   with tab5:
+      tab5.subheader("Graficas de prueba-5")
+      st.image("Procesamiento/graficas_sl/modelo2_rf_sp.png", width=900)
+
+   with tab6:
+      tab6.subheader("Graficas de prueba-6")
+      st.image("Procesamiento/graficas_sl/modelo2_rf_cp.png", width=900)
 
 with tab5:
    st.header("Análisis componentes principales")
