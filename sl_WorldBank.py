@@ -38,6 +38,56 @@ with tab3:
    tab3.subheader ("")
    st.image("Procesamiento\graficas_sl\diagrama_dispersión.png", width=900)
 
+with tab5:
+   st.header("Análisis componentes principales")
+   st.write("El hecho de que con 2 o 3 componentes principales se explique más del 95% de la varianza sugiere que estos componentes capturan la mayoría de la información de las variables de corrupción. El gráfico de varianza explicada acumulativa es útil para determinar cuántos componentes son necesarios para conservar una cantidad significativa de varianza.")
+   st.write("El hecho de observar dos clusters distintos en el gráfico de resultados del PCA sugiere que estos clusters se deban a patrones o estructuras que los componentes principales han identificado. Podrían representar grupos o tendencias específicas.")
+   st.write("Los pesos de los componentes principales indican la contribución de cada variable original a los componentes principales. En tu caso, el primer componente principal (PC1) tiene pesos relativamente altos para todas las variables, indicando que está capturando información general de todas ellas. Por otro lado, el segundo componente principal (PC2) tiene un peso significativamente alto para la variable 'CRP_GE.EST' y un peso negativo para 'CRP_VA.EST', lo que sugiere que PC2 podría estar relacionado con variaciones específicas en estas dos variables.")
+   st.write("Los scores de los componentes principales representan las proyecciones de los datos originales en el espacio de los componentes principales. Los valores más altos o más bajos en los scores indican la posición relativa de cada observación en el espacio de los componentes principales:")
+   tab5.subheader("Componente Principal 1 (PC1):")
+   st.write("Este componente parece capturar una tendencia general o patrón común en todas las variables.")
+   tab5.subheader("Componente Principal 2 (PC2)")
+   st.write("Este componente parece capturar variaciones específicas relacionadas con 'CRP_GE.EST' y 'CRP_VA.EST'.")
+   
+   
+   tab1, tab2 = st.tabs(["📈 Grafica-1", "📈 Grafica-2"])
+   with tab1:
+      tab1.subheader("Varianza Explicada Acumulativa")
+      st.image("Procesamiento/graficas_sl/varianza_explicada_acumulativa.png", width=900)
+   
+   with tab2:
+      tab2.subheader("Resultados PCA")
+      st.image("Procesamiento\graficas_sl\Resultados_pca.png", width=900)
+
+
+with tab6:
+   st.header("Grafica Iteractiva -Indicadores - Pais - Rango de tiempo")
+   tab6.subheader("Comportamiento de los indicadores por Pais - CELAP ")
+   # Ruta del archivo Excel
+   file_path = "Extraccion/structured_data/reduced_df_normalized.xlsx"
+   # Cargar el archivo Excel en un DataFrame
+   df2 = pd.read_excel(file_path)
+   # Mostrar la tabla en Streamlit
+   #st.dataframe(df2)
+   #df2 = pd.read_excel(file_path_2)
+   # Streamlit app
+   st.title('ANALISIS DE DATOS - CEPAL')
+   # Selector de variables
+   selected_variables = st.multiselect('Seleccionar Variable(s):', df2.columns)
+   # Filtro por país
+   selected_countries = st.multiselect('Seleccionar País(es):', df2['Country'].unique())
+   # Filtro por año
+   selected_year = st.slider('Seleccionar Año:', min_value=df2['Year'].min(), max_value=df2['Year'].max(), value=(df2['Year'].min(), df2['Year'].max()))
+   # Filtrar el DataFrame
+   filtered_df = df2[(df2['Country'].isin(selected_countries)) & (df2['Year'] >= selected_year[0]) & (df2['Year'] <= selected_year[1])]
+   # Aplicar filtro de variables seleccionadas
+   if selected_variables:
+      filtered_df = filtered_df[selected_variables + ['Year', 'Country']]
+   # Graficar con Plotly Express
+   fig = px.line(filtered_df, x='Year', y=selected_variables, color='Country', title='Gráfica Interactiva')
+   st.plotly_chart(fig)
+
+
 with tab4:
    tab4.subheader("Resultado - Tabla comparativa entre modelos empleados")
    ruta_matriz_modelos = r'Procesamiento/graficas_sl/modelos_df.csv'
@@ -81,44 +131,3 @@ with tab4:
    with tab6:
       tab6.subheader("Graficas de prueba-6")
       st.image("Procesamiento/graficas_sl/modelo2_rf_cp.png", width=900)
-
-with tab5:
-   st.header("Análisis componentes principales")
-   st.write("El hecho de que con 2 o 3 componentes principales se explique más del 95% de la varianza sugiere que estos componentes capturan la mayoría de la información de las variables de corrupción. El gráfico de varianza explicada acumulativa es útil para determinar cuántos componentes son necesarios para conservar una cantidad significativa de varianza.")
-   st.write("El hecho de observar dos clusters distintos en el gráfico de resultados del PCA sugiere que estos clusters se deban a patrones o estructuras que los componentes principales han identificado. Podrían representar grupos o tendencias específicas.")
-   st.write("Los pesos de los componentes principales indican la contribución de cada variable original a los componentes principales. En tu caso, el primer componente principal (PC1) tiene pesos relativamente altos para todas las variables, indicando que está capturando información general de todas ellas. Por otro lado, el segundo componente principal (PC2) tiene un peso significativamente alto para la variable 'CRP_GE.EST' y un peso negativo para 'CRP_VA.EST', lo que sugiere que PC2 podría estar relacionado con variaciones específicas en estas dos variables.")
-   st.write("Los scores de los componentes principales representan las proyecciones de los datos originales en el espacio de los componentes principales. Los valores más altos o más bajos en los scores indican la posición relativa de cada observación en el espacio de los componentes principales:")
-   tab5.subheader("Componente Principal 1 (PC1):")
-   st.write("Este componente parece capturar una tendencia general o patrón común en todas las variables.")
-   tab5.subheader("Componente Principal 2 (PC2)")
-   st.write("Este componente parece capturar variaciones específicas relacionadas con 'CRP_GE.EST' y 'CRP_VA.EST'.")
-   st.image("Procesamiento/graficas_sl/varianza_explicada_acumulativa.png", width=900)
-   st.image("Procesamiento\graficas_sl\Resultados_pca.png", width=900)
-
-with tab6:
-   st.header("Grafica Iteractiva -Indicadores - Pais - Rango de tiempo")
-   tab6.subheader("Comportamiento de los indicadores por Pais - CELAP ")
-   # Ruta del archivo Excel
-   file_path = "Extraccion/structured_data/reduced_df_normalized.xlsx"
-   # Cargar el archivo Excel en un DataFrame
-   df2 = pd.read_excel(file_path)
-   # Mostrar la tabla en Streamlit
-   #st.dataframe(df2)
-   #df2 = pd.read_excel(file_path_2)
-   # Streamlit app
-   st.title('ANALISIS DE DATOS - CEPAL')
-   # Selector de variables
-   selected_variables = st.multiselect('Seleccionar Variable(s):', df2.columns)
-   # Filtro por país
-   selected_countries = st.multiselect('Seleccionar País(es):', df2['Country'].unique())
-   # Filtro por año
-   selected_year = st.slider('Seleccionar Año:', min_value=df2['Year'].min(), max_value=df2['Year'].max(), value=(df2['Year'].min(), df2['Year'].max()))
-   # Filtrar el DataFrame
-   filtered_df = df2[(df2['Country'].isin(selected_countries)) & (df2['Year'] >= selected_year[0]) & (df2['Year'] <= selected_year[1])]
-   # Aplicar filtro de variables seleccionadas
-   if selected_variables:
-      filtered_df = filtered_df[selected_variables + ['Year', 'Country']]
-   # Graficar con Plotly Express
-   fig = px.line(filtered_df, x='Year', y=selected_variables, color='Country', title='Gráfica Interactiva')
-   st.plotly_chart(fig)
-
