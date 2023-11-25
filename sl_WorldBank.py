@@ -78,9 +78,7 @@ with tab5:
    tab5.subheader("Componente Principal 2 (PC2)")
    st.write("Este componente parece capturar variaciones específicas relacionadas con 'CRP_GE.EST' y 'CRP_VA.EST'.")
    st.image("Procesamiento/graficas_sl/varianza_explicada_acumulativa.png", width=900)
-   st.write("")
    st.image("Procesamiento\graficas_sl\Resultados_pca.png", width=900)
-   st.write("")
 
 with tab6:
    st.header("Grafica Iteractiva -Indicadores - Pais - Rango de tiempo")
