@@ -1074,11 +1074,7 @@ plt.plot(range(1, len(cumulative_explained_variance) + 1), cumulative_explained_
 plt.title('Varianza Explicada Acumulativa')
 plt.xlabel('Número de Componentes Principales')
 plt.ylabel('Varianza Explicada Acumulativa')
-plt.show()
-
-
-
-
+#plt.show()
 
 
 import streamlit as st

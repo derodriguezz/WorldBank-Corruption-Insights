@@ -48,6 +48,15 @@ with tab4:
    st.write  ("Estado de Derecho refleja la confianza y el cumplimiento de las reglas de la sociedad, incluyendo la aplicación de contratos, derechos de propiedad, la actuación policial y judicial, así como la probabilidad de crimen y violencia.")
    tab4.subheader ("Voz y Rendición de Cuentas (VA.ESTb4):")
    st.write ("Voz y Rendición de Cuentas evalúa la participación ciudadana en la selección del gobierno y la libertad de expresión, asociación y medios de comunicación.")
+   st.header("Grafica Modelos aplicados")
+   tab4.subheader ("Gráfica de Resultados")
+   st.image("Procesamiento/graficas_sl/modelo2_rf_sp.png", width=900)
+   st.image("Procesamiento/graficas_sl/modelo2_rf_cp.png", width=900)
+   st.image("Procesamiento/graficas_sl/modelo2_cp_pred.png", width=900)
+   st.image("Procesamiento/graficas_sl/modelo2_cp_test.png", width=900)
+   st.image("Procesamiento/graficas_sl/modelo2_rf_sp.png", width=900)
+   st.image("Procesamiento/graficas_sl/modelo2_rf_cp.png", width=900)
+   
 
 with tab5:
    st.header("Matriz Modelos de Regresion")
