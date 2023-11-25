@@ -71,7 +71,7 @@ with tab2:
       st.dataframe(estilos)
       # Mostrar la aplicación Streamlit
       st.write('Matriz de Correlación, entre variables de interes')
-      st.image("Procesamiento\graficas_sl\correlación.png", width=900)
+      st.image("Procesamiento/graficas_sl/correlación.png", width=900)
 
    with tab2:
       st.header("Grafica de Dispersion entre variables")
