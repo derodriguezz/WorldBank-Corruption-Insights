@@ -17,7 +17,7 @@ import streamlit as st
 
 tab1, tab2, tab3 = st.tabs(["INTRODUCCION ", "RESULTADOS RELACION ENTRE VARIABLES", "EXPLORA LOS DATOS"])
 with tab1:
-   st.header("BIENVENIDO!!!!!")
+   st.header("BIENVENIDO")
    st.write("Esta aplicación web se presenta como una valiosa herramienta para comprender la relación entre la corrupción y el desarrollo económico. La información que se presenta parte de un proyecto de investigación respaldado por metodologías de Big Data, las cuales analizan los indicadores más significativos para modelar esta relación. Como sustento, se exponen los resultados del estudio, que comprenden análisis de correlación, modelos de regresión y evaluaciones de componentes principales.")
    st.write("El propósito subyacente de este proyecto es robustecer los procesos de observación, control e intervención relacionados con la corrupción. Se concibe como un recurso valioso, sumándose a las iniciativas destinadas a mitigar los efectos adversos de la corrupción en el desarrollo económico. Selecciona cualquiera de las secciones disponibles para explorar a fondo los resultados o para adentrarte en el análisis detallado de los datos.")
    
