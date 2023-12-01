@@ -1,27 +1,6 @@
-# %% [markdown]
-# # **Extracción, limpieza y análisis de datos**
 
-# %% [markdown]
-# ## 1. Introducción
 
-# %% [markdown]
-# El objetivo del cuaderno es mostrar el funcionamiento de un pipeline para la obtención de subconjuntos de datos a partir de los datasets disponibles en  el catálogo del Banco Mundial https://datacatalog.worldbank.org/home.
-# 
-# ### 1.1 Indicadores consultados
-# 
-# 1. ODS # 8 Desarrollo Económico Sostenble: _https://datacatalog.worldbank.org/search/dataset/0037918/Sustainable-Development-Goals_ 
-#  
-# 2. Desarrollo Global: _https://datacatalog.worldbank.org/search/dataset/0037712/World-Development-Indicators_
-#  
-# 3. Governanza*: _https://datacatalog.worldbank.org/search/dataset/0038026/Worldwide-Governance-Indicators_
-# 
-# 
-# _*'Selección, monitoreo y reemplazo de gobiernos, la capacidad para formular políticas efectivas y el respeto por las instituciones que rigen las interacciones económicas y sociales.'_
-
-# %% [markdown]
-# ## 2. Importación de librerías:
-
-# %%
+## 2. Importación de librerías:
 #Carga de librerías a utilizar en el proceso
 import os
 import pandas as pd
@@ -38,21 +17,12 @@ from sklearn.metrics import mean_squared_error, r2_score
 import matplotlib.pyplot as plt
 import seaborn as sns
 from statsmodels.graphics.api import interaction_plot
-
-# %% [markdown]
-# ## 3. **Descarga de datos crudos**
-
-# %% [markdown]
-# ### 3.1 Carga de listas de índices y de países codificados:
-
-# %% [markdown]
-# Se consultan los directorios definidos para obtener los códigos de los indicadores _('Series Code')_ y los países _('countries') para ser gaurdados en listas._ Se excluyen los indicadores que presentan errores al momento de descargar.
-
-# %%
+## 3. **Descarga de datos crudos**
+### 3.1 Carga de listas de índices y de países codificados:
 # Carga de índices y lista de paises
 # Ruta completa del archivo Excel
-ruta_lista_ods = r"D:\DANI LAPTOP\Documentos\Setting\OneDrive - Ucompensar\esp files\Segundo semestre\Seminario de grado big data\WorldBank-Corruption-Insights\Fuentes\codigos_indicadores\Sustainable_Development_Goals.xlsx"
-ruta_lista_devg = r"D:\DANI LAPTOP\Documentos\Setting\OneDrive - Ucompensar\esp files\Segundo semestre\Seminario de grado big data\WorldBank-Corruption-Insights\Fuentes\codigos_indicadores\Codigos_Indicadores_Desarrollo.xlsx"
+ruta_lista_ods = r"C:\JHAA\CEPAL_3\WorldBank-Corruption-Insights\Fuentes\codigos_indicadores\Sustainable_Development_Goals.xlsx"
+ruta_lista_devg = r"C:\JHAA\CEPAL_3\WorldBank-Corruption-Insights\Fuentes\codigos_indicadores\Codigos_Indicadores_Desarrollo.xlsx"
 
 # Carga el archivo Excel en un DataFrame de pandas
 df_ods = pd.read_excel(ruta_lista_ods)
@@ -104,24 +74,16 @@ if response.status_code == 200:
         list_corr_id.append(indicator_data)
 
 #len(list_ods_id)
+### 3.2 Carga o descarga de datasets en crudo
 
-# %% [markdown]
-# ### 3.2 Carga o descarga de datasets en crudo
-
-# %% [markdown]
-# Se definen los directorios para guardar los datos en crudo. También se define una función para consultar las listas creadas y consultar los indicadores en los países seleccionados para los años registrados. Luego, éstos son transformados a 3 dataframes que consolidan respectivamente los indicadores de los grupos extraídos.
-# 
-# La función **cargar_o_descargar_dataframe** tiene como objetivo gestionar la carga o descarga de DataFrames desde archivos Excel. Fue diseñada para automatizar el proceso de adquisición de datos a partir de indicadores específicos y países, permitiendo la reutilización de datos previamente descargados si el archivo ya existe.
-
-# %%
 # Ruta donde deseas guardar el archivo Excel para ODS
-ruta_guardado_ods = r"D:\DANI LAPTOP\Documentos\Setting\OneDrive - Ucompensar\esp files\Segundo semestre\Seminario de grado big data\WorldBank-Corruption-Insights\Extraccion\raw_data\ods_raw.xlsx"
+ruta_guardado_ods = r"C:\JHAA\CEPAL_3\WorldBank-Corruption-Insights\Extraccion\raw_data\ods_raw.xlsx"
 
 # Ruta donde deseas guardar el archivo Excel para DEVG
-ruta_guardado_devg = r"D:\DANI LAPTOP\Documentos\Setting\OneDrive - Ucompensar\esp files\Segundo semestre\Seminario de grado big data\WorldBank-Corruption-Insights\Extraccion\raw_data\devg_raw.xlsx"
+ruta_guardado_devg = r"C:\JHAA\CEPAL_3\WorldBank-Corruption-Insights\Extraccion\raw_data\devg_raw.xlsx"
 
 # Ruta donde deseas guardar el archivo Excel para corrupción
-ruta_guardado_corr = r"D:\DANI LAPTOP\Documentos\Setting\OneDrive - Ucompensar\esp files\Segundo semestre\Seminario de grado big data\WorldBank-Corruption-Insights\Extraccion\raw_data\corr_raw.xlsx"
+ruta_guardado_corr = r"C:\JHAA\CEPAL_3\WorldBank-Corruption-Insights\Extraccion\raw_data\corr_raw.xlsx"
 
 
 # Carga de librerías a utilizar en el proceso
@@ -176,20 +138,10 @@ ods_raw_df = cargar_o_descargar_dataframe(ruta_guardado_ods, list_ods_id, countr
 devg_raw_df = cargar_o_descargar_dataframe(ruta_guardado_devg, list_devg_id, countries, "DEVG")
 corr_raw_df = cargar_o_descargar_dataframe(ruta_guardado_corr, list_corr_id, countries, "CORR")
 
+## 4. Transformación de datos
 
-# %% [markdown]
-# ## 4. Transformación de datos
-# 
-# El proceso de transformación de datos incluye la limpieza, imputación, consolidación y normalización de datos 
+### Limpieza e imputación de datos
 
-# %% [markdown]
-# ### Limpieza e imputación de datos
-# 
-# En primer lugar, se realiza la limpieza de los DataFrames, eliminando las filas (años) que contienen todos sus valores NaN. También, se excluyen las columnas (paises), series (indicadores) y años con un porcentaje de valores perdidos superior al 26%. Esto asegura que los conjuntos de datos resultantes estén libres de valores NaN significativos y sean más adecuados para el análisis.
-# 
-# En la segunda parte, se imputan los valores faltantes (NaN) calculando la mediana por columna en subconjuntos de indicadores. Así, si un país tiene datos perdidos para un indicador en determinados años (menos del 26% de sus datos totales), esos valores se reemplazan por la mediana del país en ese indicador específico.
-
-# %%
 # Lista para almacenar los nuevos DataFrames sin filas de NaN
 clnd_dfs = []
 
@@ -350,19 +302,8 @@ for i in range(3):
         df.update(filtered_df)
 
 
+### Consolidación y normalización de datos
 
-# %% [markdown]
-# ### Consolidación y normalización de datos
-# 
-# En esta etapa, se realiza una preparación de los DataFrames, inicialmente transponiéndolos para representar registros de países en años específicos para cada indicador. Además, se excluyen los datos de años en los cuales no hay registros en los indicadores de corrupción, igualando así los datos disponibles en las variables objetivo (desarrollo sostenible y desarrollo global) para todos los indicadores en términos de años y países según las variables independientes (corrupción).
-# 
-# Posteriormente, se ordenan los datos en tres DataFrames distintos: result_df1 (corrupción), result_df2 (desarrollo sostenible), y result_df3 (desarrollo global). Adicionalmente, se establecen manualmente determinados a indicadores a excluir debido al poco valor de análisis que representan para los objetivos del estudio. 
-# 
-# A continuación, se consolida la información en un mismo DataFrame aplicando una función para ordenar cada DataFrame por el país en orden alfabético y el año en orden descendente. Luego, a los nombre de columna de los indicadores, se les asignan prefijos distintos ("CRP_", "ODS_", "GDE_") para reconocer a qué grupo de indicadores corresponde cada columna. También, se concatenan estas columnas normalizadas en un único DataFrame llamado merged_df 
-# 
-# Por último, la normalización se efectúa mediante el Escalamiento Min-Max, garantizando que los valores de las columnas estén en un rango uniforme para facilitar el análisis comparativo de los datos. 
-
-# %%
 # Ahora, clnd_dfs contiene los DataFrames originales con los valores NaN reemplazados por las medianas correspondientes en cada serie_code
 
 ###Consolidación
@@ -549,7 +490,7 @@ for columna in columnas_a_normalizar:
     merged_df[columna] = (merged_df[columna] - min_valor) / (max_valor - min_valor)
 
 # Ruta donde se guardará o cargará el archivo Excel
-ruta_guardado_merged = r'D:\DANI LAPTOP\Documentos\Setting\OneDrive - Ucompensar\esp files\Segundo semestre\Seminario de grado big data\WorldBank-Corruption-Insights\Extraccion\structured_data\merged_df_normalized.xlsx'
+ruta_guardado_merged = r'C:\JHAA\CEPAL_3\WorldBank-Corruption-Insights\Extraccion\structured_data\merged_df_normalized.xlsx'
 
 # Verificar si el archivo ya existe
 if os.path.exists(ruta_guardado_merged):
@@ -561,21 +502,10 @@ else:
     merged_df.to_excel(ruta_guardado_merged, index=False)
 
 
-# %% [markdown]
-# ## 5. Análisis estadístico y modelado
 
-# %% [markdown]
-# ### 5.1. Matriz de correlación
-# 
-# En esta fase del proceso, se inicia eliminando la columna 'Country' de merged_df, obteniendo así merged_df1, facilitando el análisis mediante matriz de correlación. 
-# 
-# A continuación, se genera una matriz de correlación para evaluar las relaciones entre las variables restantes. Se filtran las correlaciones que superan el umbral de 0.75, eliminando aquellas que están completamente relacionadas (correlación igual a 1). Los resultados relevantes en la matriz de correlación se guardan un el DataFrame.
-# 
-# Posteriormente, se obtienen los elementos únicos en los índices y nombres de columnas para crear un nuevo DataFrame llamado reduced_df. Este último DataFrame incluye las columnas 'Country' y 'Year', así como las variables de corrupción con correlaciones significativas.
-# 
-# Con el objetivo de validar la observación de las tendencias en el DataFrame que abarca todos los países a la situación específica de Colombia, se creó una segunda matriz de correlación. En este caso, se seleccionaron únicamente los indicadores más relevantes identificados en la primera matriz de correlación, comprobando así si las correlaciones relevantes identificadas en el DataFrame de todos los países se presentan en el subconjunto de datos de indicadores de Colombia.
+## 5. Análisis estadístico y modelado
+### 5.1. Matriz de correlación
 
-# %%
 # Elimina la columna 'Country' de merged_df
 merged_df1 = merged_df.drop(columns=['Country'])
 
@@ -629,7 +559,7 @@ elementos_unicos2 = list(set(correlaciones_altas2.index) | set(correlaciones_alt
 reduced_df2 = merged_df2_1[['Country', 'Year'] + elementos_unicos2]
 
 # Ruta donde se guardará o cargará el archivo Excel
-ruta_guardado_reduced = r'D:\DANI LAPTOP\Documentos\Setting\OneDrive - Ucompensar\esp files\Segundo semestre\Seminario de grado big data\WorldBank-Corruption-Insights\Extraccion\structured_data\reduced_df_normalized.xlsx'
+ruta_guardado_reduced = r'C:\JHAA\CEPAL_3\WorldBank-Corruption-Insights\Extraccion\structured_data\reduced_df_normalized.xlsx'
 
 # Verificar si el archivo ya existe
 if os.path.exists(ruta_guardado_reduced):
@@ -640,18 +570,9 @@ else:
     # ... (código anterior para normalización)
     reduced_df.to_excel(ruta_guardado_reduced, index=False)
 
+### 5.2. Comprobación de normalidad
 
-# %% [markdown]
-# ### 5.2. Comprobación de normalidad
-# 
-# Se lleva a cabo una prueba de normalidad Anderson-Darling para evaluar la distribución de las variables numéricas. El nivel de significancia (alfa) se establece en 0.05. Se crea un DataFrame llamado para almacenar los resultados de esta prueba, incluyendo la variable evaluada, el estadístico de Anderson-Darling, el valor crítico y la conclusión sobre la normalidad. El bucle itera sobre las columnas numéricas, aplicando la prueba de normalidad a cada una. Los resultados muestran si cada variable sigue una distribución normal o no, basándose en la comparación entre el estadístico y el valor crítico.
-# 
-# Igualmente, se realizó la comprobación de normalidad para las variables altamente correlacionadas en el dataframe filtrado con los datos de Colombia.
-
-# %% [markdown]
-# #### 5.2.1 Dataframe completo
-
-# %%
+#### 5.2.1 Dataframe completo
 ### Normalidad datos globales
 # Definir el nivel de significancia (alfa)
 alpha = 0.05
@@ -720,17 +641,8 @@ norm_concatenado = norm_concatenado.reset_index(level=0)
 
 # Eliminar la columna temporal 'index' si no la necesitas
 norm_concatenado = norm_concatenado.drop(columns=['index'])
-
-# %% [markdown]
-# #### 5.2.2 Dataframe filtrado por Colombia
-
-# %% [markdown]
-# ### 5.3. Análisis de correlación
-
-# %% [markdown]
-# De acuerdo a la condición de normalidad de las variables analizadas, se realizan los análisis de correlación Spearman o Pearson según el resultado obtenido en cada una. En todos los análisis se determina la correlación entre la variable objetivo identificada y las variables de corrupción más relevantes identificadas a partir de la matriz de correlación.
-
-# %%
+#### 5.2.2 Dataframe filtrado por Colombia
+### 5.3. Análisis de correlación
 ##correlaciones spearman global
 # Crear un DataFrame vacío para almacenar los resultados de correlación
 correlation_results = pd.DataFrame(columns=['Variable', 'Correlación', 'Valor p'])
@@ -773,7 +685,6 @@ correlation_results3 = correlation_results3[correlation_results3["Variable"] != 
 # Para correlation_results
 if 'Tipo de análisis' not in correlation_results.columns:
     correlation_results.insert(0, 'Tipo de análisis', 'Pearson')
-
 # Para correlation_results2
 if 'Tipo de análisis' not in correlation_results2.columns:
     correlation_results2.insert(0, 'Tipo de análisis', 'Pearson')
@@ -818,14 +729,7 @@ corrm_concatenado = corrm_concatenado.reset_index(level=0).rename(columns={'inde
 # Establecer nuevos nombres de índice
 nuevos_nombres_columna_corrm = ['Completo', 'Colombia'] * (len(corrm_concatenado) // 2)
 corrm_concatenado.insert(0, 'Subconjunto', nuevos_nombres_columna_corrm)
-
-# %% [markdown]
-# ### 5.4. Modelos de regresión
-
-# %% [markdown]
-# Este código implementa el entrenamiento de modelos de regresión lineal para prever la variable objetivo 'GDE_SL.GDP.PCAP.EM.KD'. En el primer escenario, se realiza la división de muestras sin considerar la variable categórica 'Country', utilizando 'CRP_CC.EST', 'CRP_GE.EST', 'CRP_RL.EST', 'CRP_VA.EST' como variables independientes. En los otros dos escenarios, se incorpora 'Country' y se generan modelos adicionales, uno con el conjunto completo de datos globales y otro con un conjunto reducido, evaluando así la influencia de esta variable en las predicciones. Se utiliza la técnica de regresión lineal y se evalúa el rendimiento del modelo en conjuntos de entrenamiento y prueba.
-
-# %%
+### 5.4. Modelos de regresión
 ##dividir muestras ###SIN PAIS _sp
 
 #reduced_df['Year'].unique()
@@ -974,18 +878,12 @@ modelos_df = pd.concat([lr_results_sp, lr_results_cp, lr_results_cp_pred, lr_res
 modelos_df.columns = ['Subconjunto','Variable categorica','Método','MSE Entrenamiento', 'R2 Entrenamiento', 'MSE Prueba', 'R2 Prueba']
 modelos_df = modelos_df.reset_index(drop=True)
 
-
-# %%
 # Ejemplo de análisis de sensibilidad en Python
 valores_country = reduced_df['Country'].unique()
 for country_valor in valores_country:
     datos_subset = reduced_df[reduced_df['Country'] == country_valor]
     # Ajusta el modelo y observa cómo varía la predicción al cambiar los valores de las variables.
-
-# %% [markdown]
-# ### 5.5. Análisis de componentes pricipales
-
-# %%
+### 5.5. Análisis de componentes pricipales
 import pandas as pd
 from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
@@ -1024,33 +922,9 @@ pca_df = pd.DataFrame(data=X_pca, columns=[f'Componente Principal {i + 1}' for i
 pca_df[['Country', 'Year']] = reduced_df[['Country', 'Year']]
 
 results_df = reduced_df[['Country','Year','CRP_CC.EST', 'CRP_GE.EST', 'CRP_RL.EST', 'CRP_VA.EST', 'GDE_SL.GDP.PCAP.EM.KD']] 
+## 6. Resultados y discusión
 
-# %% [markdown]
-# ## 6. Resultados y discusión
-
-# %% [markdown]
-# En este análisis, hemos utilizado una serie de indicadores del Banco Mundial que se centran en la gobernanza y el desempeño de los gobiernos. 
-# 
-# **Control de la Corrupción (CC.EST):** Control de la Corrupción evalúa la percepción de hasta qué punto el poder público se ejerce para beneficio privado, abarcando formas tanto menores como mayores de corrupción.
-# 
-# **Efectividad del Gobierno (GE.EST):** Efectividad del Gobierno mide la calidad de los servicios públicos, la independencia del servicio civil y la credibilidad del compromiso del gobierno con sus políticas.
-# 
-# **Estado de Derecho - Cumplimiento de la ley (RL.EST):** Estado de Derecho refleja la confianza y el cumplimiento de las reglas de la sociedad, incluyendo la aplicación de contratos, derechos de propiedad, la actuación policial y judicial, así como la probabilidad de crimen y violencia.
-# 
-# **Voz y Rendición de Cuentas (VA.EST):** Voz y Rendición de Cuentas evalúa la participación ciudadana en la selección del gobierno y la libertad de expresión, asociación y medios de comunicación.
-# 
-# Al realizar un modelo de regresión lineal con estos indicadores, hemos observado relaciones significativas entre las variables independientes y el indicador dependiente, el **Producto Interno Bruto (PIB) per cápita ajustado por paridad de poder adquisitivo** (SL.GDP.PCAP.EM.KD). 
-# 
-# Sin embargo es importante destacar que el modelo no presenta un alto nivel predictivo para los datos específicos de Colombia. Esto puede deberse a factores únicos en el contexto colombiano que no están plenamente capturados por los indicadores utilizados. A pesar de esta limitación, las fuertes correlaciones entre los indicadores de gobernanza y el PIB per cápita sugieren que mejoras en el control de la corrupción, la efectividad gubernamental, el estado de derecho y la voz ciudadana podrían tener implicaciones positivas en el desarrollo económico de un país. Es crucial abordar estos aspectos para fomentar un entorno propicio para el crecimiento económico sostenible y la prosperidad.
-# 
-# Adicional al modelo de regresión lineal, aplicamos un análisis de Componentes Principales (PCA) que reveló que con 2 componentes se explica más del 95% de la varianza en los indicadores de corrupción. La identificación de dos clusters sugiere patrones específicos en los datos, en donde habría un primer componente que describe una tendencia general de todas las variables independientes y un segundo componente destacando la importancia de variables como 'CRP_GE.EST' y 'CRP_VA.EST', en la formación de tendencias específicas. La contribución relativa de ciertos aspectos de la gobernanza en estos componentes refuerza la importancia de estos indicadores en la relación entre gobernanza y desarrollo económico.
-# 
-# A continuación se presentan los resultados que soportan la evidencia de estas interacciones y las relaciones entre las variables.
-
-# %% [markdown]
-# ### 6.0.1. Relación entre variables independientes y dependientes
-
-# %%
+### 6.0.1. Relación entre variables independientes y dependientes
 # Supongamos que 'reduced_df' contiene todas las variables
 # y 'GDE_SL.GDP.PCAP.EM.KD' es tu variable dependiente
 variables_independientes = ['CRP_CC.EST', 'CRP_GE.EST', 'CRP_RL.EST', 'CRP_VA.EST']
@@ -1064,63 +938,35 @@ for variable in variables_independientes:
     plt.ylabel(variable_dependiente)
     plt.show()
 
-
-# %% [markdown]
-# ### 6.0.2. Análisis de interacción
-
-# %%
+### 6.0.2. Análisis de interacción
 # Ejemplo de análisis de interacción posterior en Python
 # Asumiendo que 'Country' es categórico y 'CRP_CC.EST' es continuo
 fig, ax = plt.subplots(figsize=(10, 6))
 interaction_plot(x=reduced_df['CRP_CC.EST'], trace=reduced_df['Country'], response=reduced_df['GDE_SL.GDP.PCAP.EM.KD'], ax=ax)
 plt.show()
-
-# %%
 # Ejemplo de análisis de interacción posterior en Python
 # Asumiendo que 'Country' es categórico y 'CRP_CC.EST' es continuo
 fig, ax = plt.subplots(figsize=(10, 6))
 interaction_plot(x=reduced_df['CRP_GE.EST'], trace=reduced_df['Country'], response=reduced_df['GDE_SL.GDP.PCAP.EM.KD'], ax=ax)
 plt.show()
-
-# %%
 # Ejemplo de análisis de interacción posterior en Python
 # Asumiendo que 'Country' es categórico y 'CRP_CC.EST' es continuo
 fig, ax = plt.subplots(figsize=(10, 6))
 interaction_plot(x=reduced_df['CRP_VA.EST'], trace=reduced_df['Country'], response=reduced_df['GDE_SL.GDP.PCAP.EM.KD'], ax=ax)
 plt.show()
-
-# %%
 # Ejemplo de análisis de interacción posterior en Python
 # Asumiendo que 'Country' es categórico y 'CRP_CC.EST' es continuo
 fig, ax = plt.subplots(figsize=(10, 6))
 interaction_plot(x=reduced_df['CRP_RL.EST'], trace=reduced_df['Country'], response=reduced_df['GDE_SL.GDP.PCAP.EM.KD'], ax=ax)
 plt.show()
-
-# %% [markdown]
-# ### 6.1. Matriz de correlación
-
-# %%
-corrm_concatenado
-
-# %% [markdown]
-# ### 6.2. Comprobación de normalidad
-
-# %%
-norm_concatenado
-
-# %% [markdown]
-# ### 6.3. Análisis de correlación
-
-# %%
-resc_concatenado
-
-# %% [markdown]
-# ### 6.4. Modelos de regresión
-
-# %%
-modelos_df
-
-# %%
+#### 6.1. Matriz de correlación
+#corrm_concatenado
+### 6.2. Comprobación de normalidad
+#norm_concatenado
+### 6.3. Análisis de correlación
+#resc_concatenado
+### 6.4. Modelos de regresión
+#modelos_df
 ##visualizar modelo2 _sp
 # Crear un DataFrame con los valores originales y predichos
 comparison_df_sp = pd.DataFrame({'Valor Real': y_test_sp, 'Valor Predicho': y_pred_test_lr_sp})
@@ -1137,8 +983,6 @@ plt.ylabel('Valores')
 plt.title('Comparación de Valores Reales y Valores Predichos')
 plt.legend()
 plt.show()
-
-# %%
 ##visualizar modelo2 _cp
 # Crear un DataFrame con los valores originales y predichos
 comparison_df_cp = pd.DataFrame({'Valor Real': y_test_cp, 'Valor Predicho': y_pred_test_lr_cp})
@@ -1155,8 +999,6 @@ plt.ylabel('Valores')
 plt.title('Comparación de Valores Reales y Valores Predichos')
 plt.legend()
 plt.show()
-
-# %%
 ##visualizar modelo2 _cp_pred
 # Crear un DataFrame con los valores originales y predichos
 comparison_df_cp_pred = pd.DataFrame({'Valor Real': y_test_cp_pred, 'Valor Predicho': y_pred_test_lr_cp_pred})
@@ -1173,8 +1015,6 @@ plt.ylabel('Valores')
 plt.title('Comparación de Valores Reales y Valores Predichos')
 plt.legend()
 plt.show()
-
-# %%
 ##visualizar modelo2 _cp_test
 # Crear un DataFrame con los valores originales y predichos
 comparison_df_cp_test = pd.DataFrame({'Valor Real':y_cp_test, 'Valor Predicho':  y_pred_cp_test})
@@ -1191,8 +1031,6 @@ plt.ylabel('Valores')
 plt.title('Comparación de Valores Reales y Valores Predichos')
 plt.legend()
 plt.show()
-
-# %%
 ##visualizar modelo2 _rf_sp
 # Crear un DataFrame con los valores originales y predichos
 comparison_df_rf_sp = pd.DataFrame({'Valor Real':y_test_sp, 'Valor Predicho':  y_pred_test_rf_sp})
@@ -1209,8 +1047,6 @@ plt.ylabel('Valores')
 plt.title('Comparación de Valores Reales y Valores Predichos')
 plt.legend()
 plt.show()
-
-# %%
 ##visualizar modelo2 _rf_cp
 # Crear un DataFrame con los valores originales y predichos
 comparison_df_rf_cp = pd.DataFrame({'Valor Real':y_test_cp, 'Valor Predicho':  y_pred_test_rf_cp})
@@ -1227,46 +1063,106 @@ plt.ylabel('Valores')
 plt.title('Comparación de Valores Reales y Valores Predichos')
 plt.legend()
 plt.show()
-
-# %% [markdown]
-# ## 6.5. Análisis de componentes principales
-
-# %% [markdown]
-# El hecho de que con 2 o 3 componentes principales se explique más del 95% de la varianza sugiere que estos componentes capturan la mayoría de la información de las variables de corrupción. El gráfico de varianza explicada acumulativa es útil para determinar cuántos componentes son necesarios para conservar una cantidad significativa de varianza.
-# 
-# El hecho de observar dos clusters distintos en el gráfico de resultados del PCA sugiere que estos clusters se deban a patrones o estructuras que los componentes principales han identificado. Podrían representar grupos o tendencias específicas.
-# 
-# Los pesos de los componentes principales indican la contribución de cada variable original a los componentes principales. En tu caso, el primer componente principal (PC1) tiene pesos relativamente altos para todas las variables, indicando que está capturando información general de todas ellas. Por otro lado, el segundo componente principal (PC2) tiene un peso significativamente alto para la variable 'CRP_GE.EST' y un peso negativo para 'CRP_VA.EST', lo que sugiere que PC2 podría estar relacionado con variaciones específicas en estas dos variables.
-# 
-# Los scores de los componentes principales representan las proyecciones de los datos originales en el espacio de los componentes principales. Los valores más altos o más bajos en los scores indican la posición relativa de cada observación en el espacio de los componentes principales:
-# 
-# **Componente Principal 1 (PC1):** Este componente parece capturar una tendencia general o patrón común en todas las variables.
-# 
-# **Componente Principal 2 (PC2)**: Este componente parece capturar variaciones específicas relacionadas con 'CRP_GE.EST' y 'CRP_VA.EST'.
-
-# %%
+## 6.5. Análisis de componentes principales
 # Imprime los pesos de los componentes principales
 print("Pesos de Componentes Principales:")
 pd.DataFrame(component_weights, columns=X.columns)
-
-# %%
 # Imprime los scores de los componentes principales
 print("\nScores de Componentes Principales:")
 pd.DataFrame(component_scores, columns=[f'Componente Principal {i + 1}' for i in range(n_components)])
-
-# %%
 plt.plot(range(1, len(cumulative_explained_variance) + 1), cumulative_explained_variance, marker='o')
 plt.title('Varianza Explicada Acumulativa')
 plt.xlabel('Número de Componentes Principales')
 plt.ylabel('Varianza Explicada Acumulativa')
-plt.show()
+#plt.show()
 
-# %%
-# Visualiza los resultados
-plt.scatter(pca_df['Componente Principal 1'], pca_df['Componente Principal 2'])
-plt.title('Resultados del PCA')
-plt.xlabel('Componente Principal 1')
-plt.ylabel('Componente Principal 2')
-plt.show()
 
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+from PIL import Image
+import os
+
+# Cargar y mostrar la imagen
+#imagen = cargar_imagen(ruta_imagen)
+st.image('https://thelogisticsworld.com/wp-content/uploads/2023/09/Cepal.jpg', width=900)
+
+# Título de la aplicación
+st.title('CEPAL - INDICADORES ODS-CORR')
+
+# Configurar la barra lateral con las pestañas
+import streamlit as st
+
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["Correlacion", "Matriz de Correlación", "Dispersion" , "Resultados Modelos de Regresión" , "Modelo de Regresion", "Gráfica iteractiva"])
+
+with tab1:
+   st.header("Grafica de Correlación entre variables")
+   tab1.subheader("De acuerdo a la condición de normalidad de las variables analizadas, se realizan los análisis de correlación Spearman o Pearson según el resultado obtenido en cada una. En todos los análisis se determina la correlación entre la variable objetivo identificada y las variables de corrupción más relevantes identificadas a partir de la matriz de correlación.")
+   st.image("Procesamiento/graficas_sl/correlacion.png", width=700)
+
+with tab2:
+   st.header("Tabla Matriz de Correlación")
+   ruta_matriz_correlacion = r'Procesamiento/graficas_sl/matriz_correlacion.csv'
+   matriz_correlacion = pd.read_csv(ruta_matriz_correlacion, index_col=0)
+   # Aplicar estilos para resaltar valores
+   estilos = matriz_correlacion.style.background_gradient(cmap='coolwarm').highlight_null('red')
+   st.dataframe(estilos)
+   # Mostrar la aplicación Streamlit
+   st.write('Matriz de Correlación, entre variables de interes')
+
+
+with tab3:
+   st.header("Grafica de Dispersion entre variables")
+   tab3.subheader ("")
+   st.image("Procesamiento/graficas_sl/diagrama_dispersión.png", width=900)
+
+with tab4:
+   st.header("Resultados modelos de Regresión")
+   st.write ("En este análisis, hemos utilizado una serie de indicadores del Banco Mundial que se centran en la gobernanza y el desempeño de los gobiernos.")  
+   tab4.subheader ("Control de la Corrupción (CC.EST):")
+   st.write ("Control de la Corrupción evalúa la percepción de hasta qué punto el poder público se ejerce para beneficio privado, abarcando formas tanto menores como mayores de corrupción.")
+   tab4.subheader ("Efectividad del Gobierno (GE.EST):")
+   st.write  ("Efectividad del Gobierno mide la calidad de los servicios públicos, la independencia del servicio civil y la credibilidad del compromiso del gobierno con sus políticas.")
+   tab4.subheader ("Estado de Derecho - Cumplimiento de la ley (RL.EST):")
+   st.write  ("Estado de Derecho refleja la confianza y el cumplimiento de las reglas de la sociedad, incluyendo la aplicación de contratos, derechos de propiedad, la actuación policial y judicial, así como la probabilidad de crimen y violencia.")
+   tab4.subheader ("Voz y Rendición de Cuentas (VA.ESTb4):")
+   st.write ("Voz y Rendición de Cuentas evalúa la participación ciudadana en la selección del gobierno y la libertad de expresión, asociación y medios de comunicación.")
+
+with tab5:
+   st.header("Matriz Modelos de Regresion")
+   tab5.subheader("Resultado - Tabla comparativa entre modelos empleados")
+   ruta_matriz_modelos = r'Procesamiento/graficas_sl/modelos_df.csv'
+   matriz_modelos = pd.read_csv(ruta_matriz_modelos, index_col=0)
+   # Aplicar estilos para resaltar valores
+   estilos = matriz_modelos.style.background_gradient(cmap='coolwarm').highlight_null('red')
+   st.dataframe(matriz_modelos)
+   # Mostrar la aplicación Streamlit
+   st.write('Matriz modelos de regresion')
+
+with tab6:
+   st.header("Grafica Iteractiva -Indicadores - Pais - Rango de tiempo")
+   tab6.subheader("Comportamiento de los indicadores por Pais - CELAP ")
+   # Ruta del archivo Excel
+   file_path = "Extraccion/structured_data/reduced_df_normalized.xlsx"
+   # Cargar el archivo Excel en un DataFrame
+   df2 = pd.read_excel(file_path)
+   # Mostrar la tabla en Streamlit
+   #st.dataframe(df2)
+   #df2 = pd.read_excel(file_path_2)
+   # Streamlit app
+   st.title('ANALISIS DE DATOS - CEPAL')
+   # Selector de variables
+   selected_variables = st.multiselect('Seleccionar Variable(s):', df2.columns)
+   # Filtro por país
+   selected_countries = st.multiselect('Seleccionar País(es):', df2['Country'].unique())
+   # Filtro por año
+   selected_year = st.slider('Seleccionar Año:', min_value=df2['Year'].min(), max_value=df2['Year'].max(), value=(df2['Year'].min(), df2['Year'].max()))
+   # Filtrar el DataFrame
+   filtered_df = df2[(df2['Country'].isin(selected_countries)) & (df2['Year'] >= selected_year[0]) & (df2['Year'] <= selected_year[1])]
+   # Aplicar filtro de variables seleccionadas
+   if selected_variables:
+      filtered_df = filtered_df[selected_variables + ['Year', 'Country']]
+   # Graficar con Plotly Express
+   fig = px.line(filtered_df, x='Year', y=selected_variables, color='Country', title='Gráfica Interactiva')
+   st.plotly_chart(fig)
 
